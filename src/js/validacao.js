@@ -108,28 +108,125 @@ function limiteDigitosCodigoPostal(valor) {
 }
 
 //------ Validações NIF
-function validarNIF(valor) {
+function validarApenasNumeros(event) {
 
-	if (strlen(valor) == 9) {
+	validarCaracteres(event, true);
+}
 
-		verificarDigito(valor);
+function validarNIF(input) {
+
+	if (input.value.length == 9) {
+
+		totalSoma = 0;
+		caracteresNIF = input.value.split("");
+		controladorRegres = 9;
+
+		for (i = 0; i < caracteresNIF.length; i++) {
+
+			totalSoma += (caracteresNIF[i] * controladorRegres);
+			controladorRegres--;
+		}
+
+		mod = totalSoma % 11;
+
+		if ((!validaModuloZeroUm(mod) && caracteresNIF[caracteresNIF.length - 1] != 0)
+			&& caracteresNIF[caracteresNIF.length - 1] != (11 -mod) ){
+
+			document.getElementById('idErroValidaNIF').style.display = 'block';
+		} else {
+
+			document.getElementById('idErroValidaNIF').style.display = 'none';
+		}
 	}
 }
 
-function veriricarDigito(valor) {
+function validaModuloZeroUm(modulo) {
 
-	for (i = 0; i <= strlen(valor); i++) {
+	retorno = false;
 
-		
+	if (modulo == 0 || modulo == 1) {
+
+		retorno = true;
 	}
+
+ 	return retorno;
 }
 
-function limiteDigitosNIF(valor) {
+//------ Validações de pais
+function validarSelecaoPais(sgPais) {
 
-	return limiteDigitos(valor, 9);
+	retorno = true;
+
+	if (sgPais == "") {
+
+		retorno = false;
+	}
+
+	return retorno;
+}
+
+//------ Validações de telefone
+function validarTelefone(input) {
+
+	retorno = true;
+
+
+		selectPais = document.getElementById('idPais');
+		indiceSelecionado = selectPais.selectedIndex;
+		sgPais = selectPais.options[indiceSelecionado].value;
+
+		if (!validarSelecaoPais(sgPais)) {
+
+			alert('É necessário informar o país.');
+			input.focus();
+
+			retorno = false;
+		}
+
+		if (sgPais == "351" && input.value.length == 3 && input.value != sgPais) {
+
+			alert('Informe o código do país correto (Portugal: ' + sgPais + ')');
+			input.focus();
+
+			retorno = false;
+		} else if (sgPais == "55" && input.value.length == 2 && input.value != sgPais) {
+
+			alert('Informe o código do país correto (Brasil: ' + sgPais + ')');
+			input.focus();
+
+			retorno = false;
+		} else if (sgPais == "52" && input.value.length == 2 && input.value != sgPais) {
+
+			alert('Informe o código do país correto (México: ' + sgPais + ')');
+			input.focus();
+
+			retorno = false;
+		} else if (sgPais == "61" && input.value.length == 2 && input.value != sgPais) {
+
+			alert('Informe o código do país correto (Austrália: ' + sgPais + ')');
+			input.focus();
+
+			retorno = false;
+		}
+
+	return retorno;
 }
 
 //------ Funções reutilizáveis
+function validarCaracteres(caractere, validarNumero) {
+
+	retorno = false;
+
+	codTecla = caractere.keyCode;
+
+	if (codTecla >= 48 && codTecla <= 57) {
+
+		retorno = true;
+	}
+
+	return retorno;
+}
+
 function limiteDigitos(valor, limite) {
 
 	retorno = true;

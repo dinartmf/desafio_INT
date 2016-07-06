@@ -1,8 +1,6 @@
 <?php
-
-require_once'service/ObjetoPersistencia.php';
-require_once'../interface/ControladorGenerico.php';
-
+require_once 'service/ObjetoPersistencia.php';
+require_once '../interface/ControladorGenerico.php';
 ?>
 
 <?php
@@ -11,7 +9,7 @@ class Controlador implements ControladorGenerico {
 
 	private $dadosRequest;
 
-	public function __construct() {	}
+	public function __construct() {}
 
 	public function realizarAcao($acao, $dadosEntrada) {
 
@@ -39,9 +37,9 @@ class Controlador implements ControladorGenerico {
 	}
 
 	public function consultar($dadosEntrada){ /* Realizar implementação */ }
-	
+
 	public function alterar($dadosEntrada){ /* Realizar implementação */ }
-	
+
 	public function excluir($dadosEntrada){ /* Realizar implementação */ }
 
 	private function tratarObjetoPersistencia($array) {
@@ -53,6 +51,16 @@ class Controlador implements ControladorGenerico {
 				"nif" => $array['nif'], "telefone" => $array['telefone']);
 	}
 }
+
+function var_error_log( $object=null ){
+    ob_start();                    // start buffer capture
+    var_dump( $object );           // dump the values
+    $contents = ob_get_contents(); // put the buffer into a variable
+    ob_end_clean();                // end capture
+    error_log( $contents );        // log contents of the result of var_dump( $object )
+}
+
+var_error_log($_POST);
 
 if (!empty($_GET) && !empty($_POST)) {
 

@@ -1,8 +1,5 @@
-<?php 
-
-require_once'service/Fabrica.php';
+<?php
 require_once'../interface/ServicosBD.php';
-
 ?>
 
 <?php
@@ -33,14 +30,14 @@ class ServicosBDUsuario implements ServicosBD {
 		$consulta = $bd->prepare($sql);
 		$consulta->bindValue(":email", $email, PDO::PARAM_STR);
 		$consulta->execute();
-		
+
 		$retornoConsulta = $consulta->fetchAll();
 
 		if(!empty($retornoConsulta)) {
 
-			$retorno = true; 
+			$retorno = true;
 		}
-		
+
 		return $retorno;
 	}
 
@@ -63,7 +60,7 @@ class ServicosBDUsuario implements ServicosBD {
 
 			$insert->closeCursor();
 
-			$sql = "INSERT INTO contato (seqUsuario, email, telefone) VALUES (:seqUsuario, 
+			$sql = "INSERT INTO contato (seqUsuario, email, telefone) VALUES (:seqUsuario,
 					:email, :telefone)";
 			$insert = $bd->prepare($sql);
 			$insert->bindValue(":seqUsuario", $seqUsuario, PDO::PARAM_INT);
@@ -82,13 +79,13 @@ class ServicosBDUsuario implements ServicosBD {
 				$insert->bindValue(":tipoDocumento", $usuario->getDocumento()->getTipoDocumento(), PDO::PARAM_INT);
 				$insert->bindValue(":numDocumento", $usuario->getDocumento()->getNumDocumento(), PDO::PARAM_STR);
 				$insert->execute();
-			
+
 				$insert->closeCursor();
 			}
 
 			if ($usuario->possuiEndereco()) {
 
-				$sql = "INSERT INTO endereco (seqUsuario, logradouro, codPostal, localidade, pais) 
+				$sql = "INSERT INTO endereco (seqUsuario, logradouro, codPostal, localidade, pais)
 						VALUES (:seqUsuario, :logradouro, :codPostal, :localidade, :pais)";
 				$insert = $bd->prepare($sql);
 				$insert->bindValue(":seqUsuario", $seqUsuario, PDO::PARAM_INT);

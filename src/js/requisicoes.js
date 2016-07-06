@@ -13,31 +13,26 @@ function enviarFormAjax() {
 	nif = document.getElementById('idNIF').value;
 	telefone = document.getElementById('idTelefone').value;
 
-	var objetoJson = '{"email" : "' + email + '", "password" : "' + password + '", '
-			+ '"nome" : "' + nome + '", "apelido" : "' + apelido + '", '
-			+ '"logradouro" : "' + logradouro + '", "codpostal" : "' + codpostal + '", ' 
-			+ '"localidade" : "' + localidade + '", "pais" : "' + pais + '", ' 
-			+ '"nif" : "' + nif + '", "telefone" : "' + telefone + '"}';
+	var objetoEnvio = "email=" + email + "&password=" + password + "&nome=" + nome
+                    + "&apelido=" + apelido + "&logradouro=" + logradouro + "&codpostal=" + codpostal
+                    + "&localidade=" + localidade + "&pais=" + pais + "&nif=" + nif + "&telefone=" + telefone ;
 
-	$.ajax({
-        type: "POST",
-        url: "src/controller/Controlador.php?acao=" + acao,
-        dataType: "json",
-        data: JSON.parse(objetoJson),
-        success: function (retorno) {
-            if (retorno) {
+            var xmlhttp = new XMLHttpRequest();
 
-            	document.getElementById('idRetorno').innerHTML = retorno['retorno'];
-            } else {
+            xmlhttp.onreadystatechange = function() {
 
-                alert("ERRO! - Ocorreu um erro inesperado, favor contactar o suporte. - (VIEW)");
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-        	alert("ERRO! - Ocorreu um erro inesperado, favor contactar o suporte. - (VIEW)");
-        }
-    });
+                    var retorno = JSON.parse(xmlhttp.responseText);
 
-	return false;
+                    document.getElementById('idRetorno').innerHTML = retorno['retorno'];
+                }
+            };
+
+            xmlhttp.open("POST", "src/controller/Controlador.php?acao=" + acao);
+            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("Connection", "close");
+            xmlhttp.send(objetoEnvio);
+
+            return false;
 }

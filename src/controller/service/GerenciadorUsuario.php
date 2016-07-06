@@ -1,5 +1,4 @@
-<?php 
-require_once'Fabrica.php'; 
+<?php
 require_once'../interface/GerenciadorPersistencia.php';
 ?>
 
